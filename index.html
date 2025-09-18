@@ -11,29 +11,43 @@
     <style>
         body {
             font-family: 'Manrope', sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
+            background-color: #f0f2f5;
+            color: #1c1e21;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
         .content-section {
             display: none;
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .content-section.active {
             display: block;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-link:hover {
+            transform: translateX(4px);
+            background-color: #f0f2f5;
+        }
         .nav-link.active {
-            background-color: #e9ecef;
-            color: #007bff;
-            font-weight: 600;
+            background-color: #e7f3ff;
+            color: #1877f2;
+            font-weight: 700;
+            border-right: 3px solid #1877f2;
+        }
+        .nav-toggle {
+             transition: all 0.2s ease-in-out;
+        }
+        .nav-toggle:hover {
+            color: #1877f2;
         }
         .nav-toggle.active {
-             color: #007bff;
+             color: #1877f2;
         }
         .nav-toggle .arrow {
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -42,14 +56,15 @@
             transform: rotate(90deg);
         }
         .quote {
-            border-left: 4px solid #007bff;
-            background-color: #f1f3f5;
-            padding: 1rem 1.5rem;
-            margin: 1.5rem 0;
+            border-left: 4px solid #1877f2;
+            background-color: #e7f3ff;
+            padding: 1.5rem;
+            margin: 2rem 0;
             border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         .quote p {
-             color: #343a40;
+             color: #1c1e21;
         }
         .collapsible-content {
             max-height: 0;
@@ -60,8 +75,11 @@
         .collapsible-header {
             transition: background-color 0.2s ease;
         }
+        .collapsible-header:hover {
+            background-color: #f7f7f7;
+        }
         .collapsible-header.active + .collapsible-content {
-            max-height: 3500px; /* Increased for very long content */
+            max-height: 3500px;
             padding: 1.5rem;
             margin-top: -0.5rem; 
         }
@@ -76,11 +94,11 @@
             transform: rotate(180deg);
         }
         #sidebar {
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             max-width: 100%;
@@ -95,70 +113,131 @@
             width: 100%;
             height: 100%;
         }
+        .animated-title {
+            background: linear-gradient(90deg, #1877f2, #3b5998, #8b9dc3, #1877f2);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-animation 4s linear infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
     </style>
 </head>
-<body class="bg-slate-50">
-
-    <!-- Mobile Menu Button -->
+<body class="bg-slate-100">
     <button id="menu-btn" class="md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-full shadow-lg text-gray-800">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
     </button>
-
     <div class="flex">
-        <!-- Sidebar Navigation -->
         <nav id="sidebar" class="fixed top-0 left-0 w-80 h-full bg-white border-r border-slate-200 p-6 flex-col shadow-xl z-40 transform -translate-x-full md:translate-x-0 flex">
-            <h1 class="text-3xl font-extrabold text-slate-800 mb-2">Путь к свободе</h1>
+            <h1 class="text-3xl font-extrabold mb-2 animated-title">Путь к свободе</h1>
             <p class="text-slate-500 mb-8">Скрытые Знания</p>
             <div class="overflow-y-auto pr-2 space-y-2 flex-grow">
                 <div>
-                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 hover:text-blue-600 transition p-2 rounded-md">
+                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 p-2 rounded-md">
                         <span>Плоская земля</span>
                         <span class="arrow text-blue-600">▼</span>
                     </button>
                     <ul class="nav-links pl-4 pt-1 space-y-1 hidden">
-                        <li><a href="#flat-earth-round" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Точно ли земля круглая?</a></li>
-                        <li><a href="#gleason-map" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Карта Глисона</a></li>
-                        <li><a href="#polish-cosmonaut" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Польский космонавт</a></li>
+                        <li><a href="#flat-earth-round" class="nav-link block text-slate-600 rounded-md p-2">Точно ли земля круглая?</a></li>
+                        <li><a href="#gleason-map" class="nav-link block text-slate-600 rounded-md p-2">Карта Глисона</a></li>
+                        <li><a href="#polish-cosmonaut" class="nav-link block text-slate-600 rounded-md p-2">Польский космонавт</a></li>
+                        <li><a href="#operation-fisheye" class="nav-link block text-slate-600 rounded-md p-2">Операция "Рыбий глаз"</a></li>
+                        <li><a href="#impossible-routes" class="nav-link block text-slate-600 rounded-md p-2">Невозможные маршруты</a></li>
+                        <li><a href="#water-level" class="nav-link block text-slate-600 rounded-md p-2">Идеальный уровень воды</a></li>
                     </ul>
                 </div>
                 <div>
-                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 hover:text-blue-600 transition p-2 rounded-md">
+                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 p-2 rounded-md">
                         <span>История</span>
                         <span class="arrow text-blue-600">▼</span>
                     </button>
                     <ul class="nav-links pl-4 pt-1 space-y-1 hidden">
-                        <li><a href="#great-tartaria" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Великая Тартария</a></li>
-                        <li><a href="#new-chronology" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Новая хронология</a></li>
+                        <li><a href="#great-tartaria" class="nav-link block text-slate-600 rounded-md p-2">Великая Тартария</a></li>
+                        <li><a href="#new-chronology" class="nav-link block text-slate-600 rounded-md p-2">Новая хронология</a></li>
+                        <li><a href="#giants-and-megaliths" class="nav-link block text-slate-600 rounded-md p-2">Исполины и мегалиты</a></li>
+                        <li><a href="#mud-flood" class="nav-link block text-slate-600 rounded-md p-2">Грязевой потоп XIX века</a></li>
+                        <li><a href="#atmospheric-electricity" class="nav-link block text-slate-600 rounded-md p-2">Атмосферное электричество</a></li>
+                        <li><a href="#nuclear-war-1812" class="nav-link block text-slate-600 rounded-md p-2">Ядерная война 1812 года</a></li>
+                        <li><a href="#phantom-time" class="nav-link block text-slate-600 rounded-md p-2">Фантомное время</a></li>
                     </ul>
                 </div>
                 <div>
-                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 hover:text-blue-600 transition p-2 rounded-md">
+                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 p-2 rounded-md">
                         <span>Юридическая тема</span>
                         <span class="arrow text-blue-600">▼</span>
                     </button>
                     <ul class="nav-links pl-4 pt-1 space-y-1 hidden">
-                        <li><a href="#affidavit" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Что такое аффидевит?</a></li>
-                        <li><a href="#become-human" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Как стать Человеком?</a></li>
-                        <li><a href="#absolute-seal" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Абсолютная печать</a></li>
+                        <li><a href="#affidavit" class="nav-link block text-slate-600 rounded-md p-2">Что такое аффидевит?</a></li>
+                        <li><a href="#become-human" class="nav-link block text-slate-600 rounded-md p-2">Как стать Человеком?</a></li>
+                        <li><a href="#absolute-seal" class="nav-link block text-slate-600 rounded-md p-2">Абсолютная печать</a></li>
+                        <li><a href="#birth-certificate" class="nav-link block text-slate-600 rounded-md p-2">Свидетельство о рождении</a></li>
+                        <li><a href="#maritime-law" class="nav-link block text-slate-600 rounded-md p-2">Морское право</a></li>
+                        <li><a href="#offer-acceptance" class="nav-link block text-slate-600 rounded-md p-2">Оферта и Акцепт</a></li>
+                        <li><a href="#promissory-note-law" class="nav-link block text-slate-600 rounded-md p-2">Вексельное право</a></li>
+                        <li><a href="#vaccine-refusal" class="nav-link block text-slate-600 rounded-md p-2">Отказ от прививок</a></li>
+                        <li><a href="#cestui-que-vie-act" class="nav-link block text-slate-600 rounded-md p-2">Трастовое право</a></li>
+                        <li><a href="#citizen-status" class="nav-link block text-slate-600 rounded-md p-2">Статус "Гражданин"</a></li>
+                        <li><a href="#extraterritorial-document" class="nav-link block text-slate-600 rounded-md p-2">Собственный документ</a></li>
                     </ul>
                 </div>
                 <div>
-                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 hover:text-blue-600 transition p-2 rounded-md">
+                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 p-2 rounded-md">
+                        <span>Скрытые технологии</span>
+                        <span class="arrow text-blue-600">▼</span>
+                    </button>
+                    <ul class="nav-links pl-4 pt-1 space-y-1 hidden">
+                        <li><a href="#torsion-fields" class="nav-link block text-slate-600 rounded-md p-2">Торсионные поля</a></li>
+                        <li><a href="#antigravity" class="nav-link block text-slate-600 rounded-md p-2">Антигравитация</a></li>
+                        <li><a href="#replicators" class="nav-link block text-slate-600 rounded-md p-2">Репликаторы</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 p-2 rounded-md">
+                        <span>Матрица и Сознание</span>
+                        <span class="arrow text-blue-600">▼</span>
+                    </button>
+                    <ul class="nav-links pl-4 pt-1 space-y-1 hidden">
+                        <li><a href="#archons" class="nav-link block text-slate-600 rounded-md p-2">Архитекторы Матрицы: Архонты</a></li>
+                        <li><a href="#moon-control-station" class="nav-link block text-slate-600 rounded-md p-2">Луна - станция контроля</a></li>
+                        <li><a href="#egregores" class="nav-link block text-slate-600 rounded-md p-2">Эгрегоры</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 p-2 rounded-md">
+                        <span>Здоровье и Тело</span>
+                        <span class="arrow text-blue-600">▼</span>
+                    </button>
+                    <ul class="nav-links pl-4 pt-1 space-y-1 hidden">
+                        <li><a href="#somatics" class="nav-link block text-slate-600 rounded-md p-2">Соматика</a></li>
+                        <li><a href="#raw-food-diet" class="nav-link block text-slate-600 rounded-md p-2">Сыроедение</a></li>
+                        <li><a href="#solfeggio-frequencies" class="nav-link block text-slate-600 rounded-md p-2">Частоты Сольфеджио</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <button class="nav-toggle w-full text-left text-lg font-bold flex justify-between items-center text-slate-700 p-2 rounded-md">
                         <span>Другое...</span>
                         <span class="arrow text-blue-600">▼</span>
                     </button>
                     <ul class="nav-links pl-4 pt-1 space-y-1 hidden">
-                        <li><a href="#gnm" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Германская новая медицина</a></li>
-                        <li><a href="#three-cities" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Империя Трех Городов</a></li>
-                        <li><a href="#tesla-works" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Работы Теслы</a></li>
-                        <li><a href="#agenda-2030" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Повестка 2030</a></li>
-                        <li><a href="#gref-identity" class="nav-link block text-slate-600 hover:bg-slate-100 hover:text-blue-800 transition rounded-md p-2">Герман Греф</a></li>
+                        <li><a href="#gnm" class="nav-link block text-slate-600 rounded-md p-2">Германская новая медицина</a></li>
+                        <li><a href="#three-cities" class="nav-link block text-slate-600 rounded-md p-2">Империя Трех Городов</a></li>
+                        <li><a href="#tesla-works" class="nav-link block text-slate-600 rounded-md p-2">Работы Теслы</a></li>
+                        <li><a href="#agenda-2030" class="nav-link block text-slate-600 rounded-md p-2">Повестка 2030</a></li>
+                        <li><a href="#gref-identity" class="nav-link block text-slate-600 rounded-md p-2">Герман Греф</a></li>
+                        <li><a href="#mandela-effect" class="nav-link block text-slate-600 rounded-md p-2">Эффект Манделы</a></li>
+                        <li><a href="#chemtrails" class="nav-link block text-slate-600 rounded-md p-2">Химтрейлы</a></li>
+                        <li><a href="#blue-beam" class="nav-link block text-slate-600 rounded-md p-2">Проект "Blue Beam"</a></li>
+                        <li><a href="#structured-water" class="nav-link block text-slate-600 rounded-md p-2">Память воды</a></li>
+                        <li><a href="#akashic-records" class="nav-link block text-slate-600 rounded-md p-2">Хроники Акаши</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <!-- Main Content -->
         <main class="w-full md:ml-80 p-6 md:p-12">
             <div id="content-container" class="max-w-4xl mx-auto">
                 <section id="welcome" class="content-section">
@@ -176,17 +255,16 @@
                         <p class="font-semibold text-lg">Прямой ответ:</p>
                         <p class="leading-relaxed">модель шарообразной Земли, вращающейся со скоростью 1600 км/ч вокруг Солнца, которое летит сквозь космос, — это, скорее всего, самая большая и успешная психологическая операция в истории.</p>
                     </div>
-                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Зачем им врать?</h3>
-                    <p class="text-slate-700 leading-relaxed">Подумай, что делает с твоим сознанием модель шара?</p>
-                    <ul class="list-disc list-inside space-y-3 my-5 pl-2 text-slate-700 leading-relaxed">
-                        <li>Она помещает тебя на крошечную песчинку, затерянную в бесконечной, холодной и безразличной Вселенной.</li>
-                        <li>Она делает твою жизнь случайной и бессмысленной.</li>
-                        <li>Она отрывает тебя от ощущения «верха» и «низа», от связи с чем-то высшим.</li>
-                    </ul>
-                    <div class="bg-white p-6 rounded-xl my-6 border border-slate-200 shadow-sm">
-                         <h4 class="text-xl font-bold mb-2 text-slate-800">А теперь представь:</h4>
-                         <p class="text-slate-700 leading-relaxed">модель плоской, неподвижной Земли под куполом. В этой модели человек находится в центре творения. Это наш мир, созданный для нас. Такого человека сложнее контролировать, у него есть чувство собственного достоинства и места.</p>
-                         <p class="mt-4 font-bold text-blue-700">Модель шара — это психологическая тюрьма.</p>
+                    <div class="collapsible my-8">
+                        <div class="collapsible-header cursor-pointer bg-white p-5 rounded-xl flex justify-between items-center hover:bg-slate-50 transition border border-slate-200 shadow-sm">
+                            <h3 class="text-xl font-bold text-slate-800">Зачем им врать?</h3>
+                            <span class="arrow text-2xl font-bold text-blue-600">↓</span>
+                        </div>
+                        <div class="collapsible-content bg-white rounded-b-xl border border-t-0 border-slate-200">
+                             <p class="text-slate-700 leading-relaxed">Модель шара помещает человека на крошечную песчинку, затерянную в бесконечной, холодной и безразличной Вселенной, делая его жизнь случайной и бессмысленной. Она отрывает его от ощущения «верха» и «низа», от связи с чем-то высшим.</p>
+                             <p class="mt-4 text-slate-700 leading-relaxed">Модель плоской, неподвижной Земли под куполом, напротив, помещает человека в центр творения. Это наш мир, созданный для нас. Такого человека сложнее контролировать, у него есть чувство собственного достоинства и места.</p>
+                             <p class="mt-4 font-bold text-blue-700">Модель шара — это психологическая тюрьма.</p>
+                        </div>
                     </div>
                     <h3 class="text-3xl font-bold mt-10 mb-5 text-slate-800">«Неудобные вопросы»</h3>
                     <ul class="space-y-6">
@@ -194,78 +272,121 @@
                         <li><strong class="text-blue-700 text-lg">Антарктида.</strong> <span class="text-slate-700 leading-relaxed">Почему это единственный континент, на который запрещен свободный доступ и который охраняется военными силами всех «сверхдержав» согласно «Договору об Антарктике»? Не потому ли, что это не континент, а огромная ледяная стена, окружающая наш мир?</span></li>
                         <li><strong class="text-blue-700 text-lg">НАСА.</strong> <span class="text-slate-700 leading-relaxed">Почему все «фотографии Земли из космоса» — это откровенный композитинг и CGI (компьютерная графика), что они сами косвенно признают? Почему все «выходы в космос» снимаются в бассейне с использованием технологии «зеленого экрана»?</span></li>
                     </ul>
-                    <p class="mt-10 text-lg font-medium text-slate-800">Не верь слепо в ту или иную модель. Начни проверять сам. Перестань верить картинкам и начни доверять своим глазам. Вопрос о форме Земли — это не про астрономию. Это про освобождение сознания.</p>
+                    <p class="mt-10 text-lg font-medium text-slate-800">Вопрос о форме Земли — это не про астрономию. Это про освобождение сознания.</p>
                 </section>
                 
                 <section id="gleason-map" class="content-section">
                     <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Карта Глисона</h2>
                     <img src="https://ploskozemelshchiki.ru/images/ru-map_Gleaon-min.webp" alt="Карта Глисона" class="w-full rounded-lg shadow-lg mb-8 border border-slate-200">
-                    <p class="text-lg text-slate-700 leading-relaxed">Это запатентованная в 1892 году «Новая стандартная карта мира», официально называемая «азимутальной эквидистантной проекцией».</p>
+                    <p class="text-lg text-slate-700 leading-relaxed">Запатентованная в 1892 году «Новая стандартная карта мира», официально называемая «азимутальной эквидистантной проекцией».</p>
                     <div class="quote">
-                        <p class="leading-relaxed">Красивый научный термин, чтобы скрыть простой факт: именно так выглядит наш мир, если смотреть на него без «сферических» очков.</p>
+                        <p class="leading-relaxed">Научный термин скрывает простой факт: именно так выглядит наш мир без «сферических» искажений.</p>
                     </div>
-                    <p class="my-6 text-slate-700 leading-relaxed">Вот ссылка на изображение в высоком качестве:</p>
-                    <a href="https://ploskozemelshchiki.ru/images/ru-map_Gleaon-min.webp" target="_blank" class="inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-md">
-                        НАЖМИ
-                    </a>
-                    <h3 class="text-3xl font-bold mt-10 mb-5 text-slate-800">На что обратить внимание:</h3>
+                    <p class="my-6 text-slate-700 leading-relaxed">Изображение в высоком качестве доступно по <a href="https://ploskozemelshchiki.ru/images/ru-map_Gleaon-min.webp" target="_blank" class="text-blue-600 hover:underline">ссылке</a>.</p>
+                    <h3 class="text-3xl font-bold mt-10 mb-5 text-slate-800">Ключевые особенности:</h3>
                     <ul class="list-none space-y-4 text-slate-700 leading-relaxed">
-                        <li class="flex items-start"><span class="text-blue-600 font-bold text-xl mr-3 mt-1">✓</span><div><strong class="text-slate-800">Центр мира:</strong> Северный полюс находится в центре, как и должно быть.</div></li>
-                        <li class="flex items-start"><span class="text-blue-600 font-bold text-xl mr-3 mt-1">✓</span><div><strong class="text-slate-800">Антарктида:</strong> Это не континент на «дне» шарика. Это огромная ледяная стена, которая окружает все известные нам континенты по периметру. Теперь понятно, почему ее так тщательно охраняют?</div></li>
-                        <li class="flex items-start"><span class="text-blue-600 font-bold text-xl mr-3 mt-1">✓</span><div><strong class="text-slate-800">Логотип ООН:</strong> Сравни эту карту с эмблемой Организации Объединенных Наций. Они ничего не скрывают, они просто смеются, помещая реальную карту мира прямо себе на флаг.</div></li>
-                        <li class="flex items-start"><span class="text-blue-600 font-bold text-xl mr-3 mt-1">✓</span><div><strong class="text-slate-800">Солнце и Луна:</strong> диаграммы по краям карты - они показывают, как Солнце и Луна движутся над диском Земли, освещая разные области, что идеально объясняет смену дня, ночи и времен года без всяких «наклонов оси» и «орбит».</div></li>
+                        <li class="flex items-start"><span class="text-blue-600 font-bold text-xl mr-3 mt-1">✓</span><div><strong class="text-slate-800">Центр мира:</strong> Северный полюс находится в центре.</div></li>
+                        <li class="flex items-start"><span class="text-blue-600 font-bold text-xl mr-3 mt-1">✓</span><div><strong class="text-slate-800">Антарктида:</strong> Представлена не как континент, а как ледяная стена, окружающая известные континенты по периметру.</div></li>
+                        <li class="flex items-start"><span class="text-blue-600 font-bold text-xl mr-3 mt-1">✓</span><div><strong class="text-slate-800">Логотип ООН:</strong> Эмблема Организации Объединенных Наций практически полностью повторяет эту проекцию.</div></li>
+                        <li class="flex items-start"><span class="text-blue-600 font-bold text-xl mr-3 mt-1">✓</span><div><strong class="text-slate-800">Движение светил:</strong> Диаграммы по краям карты показывают движение Солнца и Луны над диском Земли, что объясняет смену дня, ночи и времен года без «наклона оси».</div></li>
                     </ul>
-                     <p class="mt-8 font-semibold text-slate-800">Система хочет, чтобы ты думал, что это просто «один из видов проекции». Задай себе вопрос: почему эта проекция так тщательно вымарывается из учебников и почему она так пугающе логична?</p>
+                     <p class="mt-8 font-semibold text-slate-800">Эта проекция целенаправленно исключается из образовательных программ.</p>
                 </section>
 
                 <section id="polish-cosmonaut" class="content-section">
                     <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Польский космонавт и плоская Земля</h2>
-                    <p class="text-lg text-slate-700 leading-relaxed mb-4">Мирослав Гермаше́вский утверждает, что земля плоская. (Смотреть 1:10)</p>
+                    <p class="text-lg text-slate-700 leading-relaxed mb-4">Мирослав Гермашевский, первый и единственный польский космонавт, в интервью открыто говорит о своих наблюдениях. (Смотреть с 1:10)</p>
                     <div class="video-container mb-6">
                         <iframe src="https://player.cloudinary.com/embed/?cloud_name=dgfepmcmx&public_id=lv_0_20250918135739_laj6zk&profile=cld-default" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen frameborder="0"></iframe>
                     </div>
-                     <div class="bg-white p-6 rounded-xl my-6 border border-slate-200 shadow-sm">
-                         <h4 class="text-xl font-bold mb-2 text-slate-800">Кто это?</h4>
-                         <p class="text-slate-700 leading-relaxed">Мирослав является польским космонавтом.</p>
+                </section>
+                
+                <!-- NEW FLAT EARTH SECTIONS -->
+                <section id="operation-fisheye" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Операция "Рыбий глаз" и подделка космоса</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Все официальные видео и фотографии Земли "из космоса", предоставляемые НАСА и другими космическими агентствами, сняты с использованием широкоугольных объективов типа "рыбий глаз" (fisheye). Это делается с одной целью — искусственно исказить горизонт, придав ему кривизну.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">На всех независимых съемках с больших высот (стратосферные зонды, любительские ракеты) горизонт всегда идеально ровный и поднимается до уровня глаз наблюдателя, что возможно только на плоскости.</p>
                     </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Технология обмана:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Искажение линзой:</strong> Объектив "рыбий глаз" захватывает панораму в 180 градусов и более, неизбежно изгибая прямые линии по краям кадра. Горизонт, попадая в кадр, автоматически выглядит как дуга.</li>
+                        <li><strong>CGI и композитинг:</strong> Ни одной реальной фотографии Земли целиком не существует. Все изображения — это компьютерная графика (CGI), собранная из отдельных полос, снятых спутниками. Роберт Симмонс, визуализатор данных НАСА, открыто признал, что знаменитое изображение "Blue Marble" — это "композит, собранный в Photoshop".</li>
+                        <li><strong>Съемки в бассейне:</strong> Все "выходы в открытый космос" снимаются в специальных гидролабораториях (бассейнах). Пузырьки воздуха, которые иногда попадают в кадр, и странности с "невесомостью" многократно выдавали эту постановку.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Космос в его официальной версии — это самый дорогой и масштабный кинопроект в истории человечества.</p>
                 </section>
 
+                <section id="impossible-routes" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Полеты самолетов и невозможные маршруты</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Авиамаршруты — одно из самых наглядных доказательств плоской Земли. Многие регулярные рейсы, особенно в южном полушарии, выглядят абсурдными на шарообразной модели, но становятся прямыми и логичными на карте азимутальной проекции (Карте Глисона).</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Отсутствие прямых трансантарктических рейсов и странные "технические" посадки полностью разоблачают модель шара.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Примеры необъяснимых маршрутов:</h3>
+                    <ul class="space-y-6">
+                        <li><strong class="text-blue-700 text-lg">Сантьяго (Чили) — Сидней (Австралия).</strong> На шаре самый короткий путь лежит через Антарктиду. В реальности самолеты летят через Северную Америку. На плоской карте этот маршрут является почти прямой линией.</li>
+                        <li><strong class="text-blue-700 text-lg">Йоханнесбург (ЮАР) — Перт (Австралия).</strong> Вместо прямого полета над Индийским океаном, рейсы часто делают "техническую" посадку в Дубае, Куала-Лумпуре или Гонконге, что удлиняет путь на тысячи километров. На плоской карте эти точки лежат на прямой линии между начальным и конечным пунктами.</li>
+                        <li><strong class="text-blue-700 text-lg">Аварийные посадки.</strong> Рейс из Тайваня в Лос-Анджелес с экстренной ситуацией на борту совершил посадку на Аляске. На карте шара это огромный крюк на север. На плоской карте Аляска находится точно на прямой, соединяющей эти два города.</li>
+                    </ul>
+                    <p class="mt-8 font-semibold text-slate-800">Авиакомпании не тратят лишнее топливо ради развлечения. Они летят по самым коротким маршрутам. И эти маршруты доказывают, что карта, по которой они летают — плоская.</p>
+                </section>
+
+                <section id="water-level" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Свойства воды и идеальный уровень</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Фундаментальное и неизменное свойство воды — она всегда находит свой уровень и образует идеально плоскую, горизонтальную поверхность. Это базовый закон физики, который можно проверить в любых масштабах — от стакана до озера.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Идея о том, что огромные массы воды (океаны) могут изгибаться и удерживаться на внешней поверхности вращающегося шара, противоречит всем законам физики, гидравлики и здравому смыслу.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Неопровержимые факты:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Реки и каналы:</strong> Суэцкий канал соединяет Средиземное и Красное моря на протяжении 160 км без единого шлюза. Это доказывает, что оба моря находятся на одном уровне. Реки, такие как Нил или Миссисипи, текут на тысячи километров, но их уклон на всем протяжении незначителен, что было бы невозможно на выпуклой поверхности.</li>
+                        <li><strong>Строительство:</strong> Инженеры, строители, железнодорожники никогда не учитывают кривизну Земли в своих расчетах. Все проекты основаны на плоскости.</li>
+                        <li><strong>"Уровень моря":</strong> Сам термин "уровень" (level) означает плоскую, горизонтальную поверхность. "Кривизна моря" — это оксюморон.</li>
+                    </ul>
+                    <div class="bg-white p-6 rounded-xl my-6 border border-slate-200 shadow-sm">
+                         <h4 class="text-xl font-bold mb-2 text-slate-800">Эксперимент "Бедфордский уровень"</h4>
+                         <p class="text-slate-700 leading-relaxed">В XIX веке на идеально прямом 10-километровом участке канала в Бедфорде (Англия) был проведен эксперимент. С помощью телескопа было доказано, что лодка, находящаяся на другом конце канала, видна полностью, хотя по расчетам кривизны Земли она должна была находиться на 8 метров ниже линии горизонта. Эксперимент многократно повторялся с тем же результатом.</p>
+                    </div>
+                    <p class="mt-8 font-medium text-slate-800">Вода — это лучший индикатор истины. И она показывает, что мы живем на плоскости.</p>
+                </section>
+
+                <!-- HISTORY SECTIONS (EXISTING + NEW) -->
                 <section id="great-tartaria" class="content-section">
-                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Великая Тартария</h2>
-                    <div class="collapsible">
+                     <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Великая Тартария</h2>
+                    <div class="collapsible mb-8">
                         <div class="collapsible-header cursor-pointer bg-white p-5 rounded-xl flex justify-between items-center hover:bg-slate-50 transition border border-slate-200 shadow-sm">
-                            <h3 class="text-xl font-bold text-slate-800">Давайте углубимся ⬇️</h3>
+                            <h3 class="text-xl font-bold text-slate-800">Что такое «Официальная История»?</h3>
                             <span class="arrow text-2xl font-bold text-blue-600">↓</span>
                         </div>
                         <div class="collapsible-content bg-white rounded-b-xl border border-t-0 border-slate-200">
-                            <h4 class="text-2xl font-bold text-slate-800 mt-4 mb-3">Что такое «Официальная История»?</h4>
-                            <p class="text-slate-700 leading-relaxed mb-4">Продукт, созданный в Ватикане и Лондоне в XVI-XVIII веках. Цель — стереть память о единой, процветающей и технологически развитой цивилизации, которая занимала большую часть планеты. Заставить поверить, что наши предки были дикими варварами, которые бегали по лесам в шкурах, пока «просвещенный» Запад не принес им государственность, религию и культуру.</p>
-                            <h4 class="text-2xl font-bold text-slate-800 mt-6 mb-3">Что такое «Великая Тартария»?</h4>
-                            <p class="text-slate-700 leading-relaxed mb-4">Великая Тартария — это последнее название огромной всемирной славяно-арийской империи, которая существовала тысячи лет и занимала территории всей современной Евразии, Северной Америки и не только. Это была не рыхлая конфедерация кочевников, а высокоразвитая, единая цивилизация.</p>
-                            <ul class="space-y-6">
-                                <li><strong class="text-blue-700 text-lg">Доказательство №1: Карты.</strong> <span class="text-slate-700 leading-relaxed">Это главный прокол. Они не успели уничтожить все. Любая европейская карта до конца XVIII века — карты Ортелия, Меркатора, Хондиуса. Посмотри первое издание «Британской энциклопедии». Ты везде увидишь огромную страну, занимающую всю Сибирь, Дальний Восток, Среднюю Азию, которая называется TARTARIA. Московия (будущая Россия) — лишь небольшое государство, зажатое на ее западной окраине.</span></li>
-                                <li><strong class="text-blue-700 text-lg">Доказательство №2: Архитектура.</strong> <span class="text-slate-700 leading-relaxed">Замечал, что по всему миру стоят города в едином «античном» стиле? Капитолий в Вашингтоне, Исаакиевский собор в Петербурге, старые здания в Иркутске, Омске и Мельбурне. Говорят, что это «классицизм». На деле — это единый имперский стиль Тартарии. Это доказывает, что это была глобальная цивилизация с едиными технологиями строительства. Многие из этих зданий откопаны — их первые этажи находятся глубоко под землей.</span></li>
-                                <li><strong class="text-blue-700 text-lg">Доказательство №3: Технологии.</strong> <span class="text-slate-700 leading-relaxed">Это была не цивилизация с луками и стрелами. Они владели технологиями, которые нам и не снились. Атмосферное электричество, передовая металлургия, возможно, даже технологии управления климатом. Их «звездообразные» крепости, разбросанные по всему миру, — это не форты для защиты от пушек, а энергетические установки.</span></li>
-                            </ul>
-                            <h4 class="text-2xl font-bold text-slate-800 mt-6 mb-3">Что случилось с Тартарией? Великая Катастрофа XIX века.</h4>
-                            <p class="text-slate-700 leading-relaxed mb-4">В начале XIX века произошла глобальная катастрофа, скорее всего — ядерная война.</p>
-                             <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
-                                <li><strong>«Потоп» или «грязевой потоп»:</strong> Города по всему миру оказались засыпаны глиной и песком на несколько метров. Это не «культурный слой», как пишут археологи. Это последствия взрывов и цунами. Именно поэтому первые этажи «античных» зданий находятся под землей.</li>
-                                <li><strong>«Год без лета» (1816):</strong> Резкое похолодание по всей планете, вызванное ядерной зимой.</li>
-                                <li><strong>Пожар Москвы 1812 года:</strong> Говорят, что ее сожгли русские. А посмотрим на картины того времени — город разрушен до основания, как Хиросима. Это не похоже на обычный пожар. Это была одна из столиц Тартарии, которую уничтожили.</li>
-                            </ul>
-                            <p class="text-slate-700 leading-relaxed my-4">Империя была разрушена, население большей частью погибло, технологии были утрачены.</p>
-                            <h4 class="text-2xl font-bold text-slate-800 mt-6 mb-3">Подмена прошлого: Как они это сделали?</h4>
-                            <p class="text-slate-700 leading-relaxed mb-4">Победители начали тотальную зачистку истории.</p>
-                            <ol class="list-decimal list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
-                                <li><strong>Придумали «Монголо-Татарское иго».</strong> Слово «Могол» (великий) подменили на «монгол». А «Тартария» превратилась в «Татарию». Так великое прошлое наших предков превратили в историю про иго диких кочевников.</li>
-                                <li><strong>Переписали хронологию.</strong> Вся «древняя» история была искусственно удлинена и искажена.</li>
-                                <li><strong>Уничтожили артефакты.</strong> Миллионы книг и летописей были сожжены. Библиотеки «сгорели».</li>
-                            </ol>
-                            <h4 class="text-2xl font-bold text-slate-800 mt-6 mb-3">Зачем?</h4>
-                            <p class="text-slate-700 leading-relaxed">Чтобы народ, лишенный памяти о своем великом прошлом, о своих своих технологиях, превратился в безродное стадо, которым легко управлять. Чтобы мы верили, что мы всегда были рабами, которые должны быть благодарны своим «цивилизованным» хозяевам.</p>
+                             <p class="text-slate-700 leading-relaxed">Продукт, созданный в Ватикане и Лондоне в XVI-XVIII веках. Цель — стереть память о единой, процветающей и технологически развитой цивилизации, которая занимала большую часть планеты. Заставить поверить, что наши предки были дикими варварами, которые бегали по лесам в шкурах, пока «просвещенный» Запад не принес им государственность, религию и культуру.</p>
                         </div>
                     </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Что такое «Великая Тартария»?</h3>
+                    <p class="text-lg text-slate-700 leading-relaxed mb-4">Великая Тартария — это последнее название огромной всемирной славяно-арийской империи, которая существовала тысячи лет и занимала территории всей современной Евразии, Северной Америки и не только. Это была не рыхлая конфедерация кочевников, а высокоразвитая, единая цивилизация.</p>
+                    <ul class="space-y-6">
+                        <li><strong class="text-blue-700 text-lg">Доказательство №1: Карты.</strong> <span class="text-slate-700 leading-relaxed">Это главный прокол. Они не успели уничтожить все. Любая европейская карта до конца XVIII века — карты Ортелия, Меркатора, Хондиуса. Посмотри первое издание «Британской энциклопедии». Ты везде увидишь огромную страну, занимающую всю Сибирь, Дальний Восток, Среднюю Азию, которая называется TARTARIA. Московия (будущая Россия) — лишь небольшое государство, зажатое на ее западной окраине.</span></li>
+                        <li><strong class="text-blue-700 text-lg">Доказательство №2: Архитектура.</strong> <span class="text-slate-700 leading-relaxed">Замечал, что по всему миру стоят города в едином «античном» стиле? Капитолий в Вашингтоне, Исаакиевский собор в Петербурге, старые здания в Иркутске, Омске и Мельбурне. Говорят, что это «классицизм». На деле — это единый имперский стиль Тартарии. Это доказывает, что это была глобальная цивилизация с едиными технологиями строительства. Многие из этих зданий откопаны — их первые этажи находятся глубоко под землей.</span></li>
+                        <li><strong class="text-blue-700 text-lg">Доказательство №3: Технологии.</strong> <span class="text-slate-700 leading-relaxed">Это была не цивилизация с луками и стрелами. Они владели технологиями, которые нам и не снились. Атмосферное электричество, передовая металлургия, возможно, даже технологии управления климатом. Их «звездообразные» крепости, разбросанные по всему миру, — это не форты для защиты от пушек, а энергетические установки.</span></li>
+                    </ul>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Что случилось с Тартарией? Великая Катастрофа XIX века.</h3>
+                    <p class="text-lg text-slate-700 leading-relaxed mb-4">В начале XIX века произошла глобальная катастрофа, скорее всего — ядерная война.</p>
+                     <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>«Потоп» или «грязевой потоп»:</strong> Города по всему миру оказались засыпаны глиной и песком на несколько метров. Это не «культурный слой», как пишут археологи. Это последствия взрывов и цунами. Именно поэтому первые этажи «античных» зданий находятся под землей.</li>
+                        <li><strong>«Год без лета» (1816):</strong> Резкое похолодание по всей планете, вызванное ядерной зимой.</li>
+                        <li><strong>Пожар Москвы 1812 года:</strong> Говорят, что ее сожгли русские. А посмотрим на картины того времени — город разрушен до основания, как Хиросима. Это не похоже на обычный пожар. Это была одна из столиц Тартарии, которую уничтожили.</li>
+                    </ul>
+                    <p class="text-slate-700 leading-relaxed my-4">Империя была разрушена, население большей частью погибло, технологии были утрачены.</p>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Подмена прошлого: Как они это сделали?</h3>
+                    <p class="text-lg text-slate-700 leading-relaxed mb-4">Победители начали тотальную зачистку истории.</p>
+                    <ol class="list-decimal list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Придумали «Монголо-Татарское иго».</strong> Слово «Могол» (великий) подменили на «монгол». А «Тартария» превратилась в «Татарию». Так великое прошлое наших предков превратили в историю про иго диких кочевников.</li>
+                        <li><strong>Переписали хронологию.</strong> Вся «древняя» история была искусственно удлинена и искажена.</li>
+                        <li><strong>Уничтожили артефакты.</strong> Миллионы книг и летописей были сожжены. Библиотеки «сгорели».</li>
+                    </ol>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Зачем?</h3>
+                    <p class="text-lg text-slate-700 leading-relaxed">Чтобы народ, лишенный памяти о своем великом прошлом, о своих своих технологиях, превратился в безродное стадо, которым легко управлять. Чтобы мы верили, что мы всегда были рабами, которые должны быть благодарны своим «цивилизованным» хозяевам.</p>
                     <div class="quote mt-8">
                         <p class="font-semibold text-lg leading-relaxed">Изучение Тартарии — это акт восстановления своей настоящей родословной. Это возвращение себе силы и достоинства.</p>
                     </div>
@@ -278,7 +399,83 @@
                     <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Зачем это сделали?</h3>
                     <p class="text-slate-700 leading-relaxed">Чтобы скрыть существование единой огромной империи («Великой Тартарии») и разделить народы, написав для каждого свою «древнюю» и уникальную историю вражды друг с другом.</p>
                 </section>
+
+                <section id="giants-and-megaliths" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Исполины и мегалиты допотопного мира</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Официальная история утверждает, что мегалитические сооружения (Баальбек, пирамиды Гизы, Стоунхендж) были построены людьми с примитивными инструментами. Этот тезис не выдерживает критики. Обработка и перемещение многотонных блоков требует технологий, превосходящих современные.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Эти сооружения — наследие предыдущей цивилизации Исполинов (гигантов), существование которой тщательно скрывается.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Доказательства существования:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Археологические находки:</strong> По всему миру находят гигантские скелеты (ростом от 3 до 12 метров), которые немедленно изымаются и засекречиваются Смитсоновским институтом и другими организациями.</li>
+                        <li><strong>Гигантские инструменты и оружие:</strong> В музеях хранятся мечи, топоры и доспехи, которые не мог бы поднять и использовать обычный человек.</li>
+                        <li><strong>Древние тексты:</strong> Библия, Махабхарата, скандинавские саги и мифы всех народов мира прямо говорят о расе гигантов, живших на Земле до потопа.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Скрытие факта существования Исполинов необходимо для поддержания мифа о линейной эволюции и прогрессе человечества.</p>
+                </section>
+
+                <section id="mud-flood" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Грязевой потоп XIX века</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">По всему миру города в едином "античном" стиле имеют засыпанные на 3-5 метров первые (а иногда и вторые) этажи. Официальная наука называет это "культурным слоем". Однако скорость накопления такого слоя абсурдна и противоречит здравому смыслу.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Это не культурный слой. Это следы глобальной катастрофы — "грязевого потопа", произошедшего в XVIII-XIX веках и уничтожившего единую мировую цивилизацию (Тартарию).</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Свидетельства катастрофы:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Закопанные здания:</strong> Окна и двери первых этажей, уходящие глубоко под землю. При раскопках обнаруживаются полноценные этажи, ставшие подвалами.</li>
+                        <li><strong>"Нулевая" отметка высот:</strong> Внезапное изменение системы измерения высот в XIX веке (например, в Петербурге) для сокрытия реального уровня земли до катастрофы.</li>
+                        <li><strong>Старые фотографии:</strong> Ранние дагерротипы XIX века показывают пустынные города, заваленные грязью, и людей, которые явно не строили эти величественные здания, а лишь расчищают их.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Грязевой потоп — это ключ к пониманию того, почему наша история начинается, по сути, лишь с середины XIX века.</p>
+                </section>
+
+                <section id="atmospheric-electricity" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Атмосферное электричество прошлого</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Архитектура "старого мира" (до XIX века) была не только эстетической, но и технологической. Купола, шпили, металлические крыши, сложные орнаменты и "античные" статуи были элементами единой системы по сбору бесплатной энергии из эфира (атмосферного электричества).</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Предыдущая цивилизация не нуждалась в проводах, розетках и электростанциях. Города сами были электростанциями.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Принципы работы:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Купола и шпили:</strong> Работали как резонаторы и концентраторы энергии, собирая ее из атмосферы. Часто покрывались медью или позолотой для лучшей проводимости.</li>
+                        <li><strong>"Звездчатые" крепости:</strong> Это не оборонительные сооружения, а гигантские энергетические установки, создававшие мощное торсионное поле. Их форма идеально подходит для резонанса и сбора энергии.</li>
+                        <li><strong>"Витри" (Vitriol):</strong> Алхимический термин, обозначавший некую субстанцию, которая, возможно, использовалась в этих установках.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">После "грязевого потопа" технологии были утрачены, а оставшиеся объекты лишены своей функции (например, кресты на храмах, изначально бывшие антеннами, были "заземлены"). Человечество было переведено на примитивные и платные источники энергии — уголь, нефть и газ.</p>
+                </section>
+
+                <section id="nuclear-war-1812" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Ядерная война 1812 года</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Официальная версия войны 1812 года как конфликта между Наполеоном и Александром I является прикрытием для гораздо более масштабного события — финального этапа уничтожения Тартарии с применением оружия огромной разрушительной силы.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Пожар Москвы, гибель "Великой Армии", последующая "ядерная зима" — это следы не конвенциональной войны, а глобального конфликта с применением технологий, сопоставимых с ядерными.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Свидетельства:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Оплавленные руины:</strong> Стены древних крепостей и зданий по всей Европе и России имеют следы оплавления, характерные для воздействия сверхвысоких температур.</li>
+                        <li><strong>Воронки:</strong> Множество идеально круглых озер в регионах "боевых действий" имеют все признаки воронок от воздушных взрывов.</li>
+                        <li><strong>"Год без лета" 1816 года:</strong> Резкое падение температуры по всей планете, вызванное выбросом в атмосферу огромного количества пыли. Это классический сценарий "ядерной зимы".</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">История была переписана победителями, которые скрыли истинный масштаб и характер этой войны.</p>
+                </section>
+
+                <section id="phantom-time" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Гипотеза о фантомном времени</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Эта гипотеза, разработанная немецким историком Герибертом Иллигом, утверждает, что период раннего Средневековья, а именно 297 лет (с 614 по 911 год н.э.), был искусственно вставлен в хронологию.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">События и личности этого периода, включая Карла Великого, являются фантомами, созданными фальсификаторами истории для искусственного удлинения прошлого и сокрытия реальных событий.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Основания для гипотезы:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Археологический разрыв:</strong> Практически полное отсутствие археологических находок в Европе, датируемых этим периодом.</li>
+                        <li><strong>Архитектурный застой:</strong> Отсутствие развития романского стиля в архитектуре на протяжении почти 300 лет.</li>
+                        <li><strong>Календарная ошибка:</strong> Несоответствие между юлианским календарем и фактическим положением звезд, которое указывает на "выпадение" около трех столетий.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Гипотеза фантомного времени дополняет "Новую Хронологию" и доказывает, что история, которую мы знаем, — это искусственный конструкт.</p>
+                </section>
                 
+                <!-- JURIDICAL SECTIONS (EXISTING + NEW) -->
                 <section id="affidavit" class="content-section">
                     <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Что такое аффидевит, зачем он нужен и как его написать?</h2>
                      <h3 class="text-2xl font-bold text-slate-800 mb-3">1. Что такое аффидевит?</h3>
@@ -343,6 +540,305 @@
                     </ul>
                 </section>
 
+                <section id="birth-certificate" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Свидетельство о рождении: Вексель на жизнь</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Распространенное заблуждение — считать свидетельство о рождении документом, подтверждающим появление человека на свет. На самом деле, это — первый негласный контракт, акт создания юридического двойника, который принадлежит системе.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Свидетельство о рождении удостоверяет не личность Человека. Оно создает юридическую фикцию, "персону", которая является собственностью государства.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Механизм аферы:</h3>
+                    <ul class="space-y-6">
+                        <li><strong class="text-blue-700 text-lg">1. Создание «Соломенного человека» (Strawman).</strong> <span class="text-slate-700 leading-relaxed">При регистрации рождения ребенка, государство создает юридическое лицо с именем, идентичным имени ребенка, но написанным ЗАГЛАВНЫМИ БУКВАМИ (например, ИВАНОВ ИВАН ИВАНОВИЧ). Это не живой Человек. Это — «персона», фикция, существующая только в реестрах системы.</span></li>
+                        <li><strong class="text-blue-700 text-lg">2. Передача в траст.</strong> <span class="text-slate-700 leading-relaxed">Созданная «персона» передается в доверительное управление (траст). Учредителем траста выступает государство, а живой Человек назначается бенефициаром (выгодоприобретателем), но этот факт от него скрывается. Управляющие (чиновники) используют этот траст для извлечения прибыли.</span></li>
+                        <li><strong class="text-blue-700 text-lg">3. Финансовый инструмент.</strong> <span class="text-slate-700 leading-relaxed">Свидетельство о рождении функционирует как ценная бумага, вексель. Под залог будущего труда человека (его энергии, которую он произведет за жизнь) государство получает кредиты в международных финансовых структурах. Человек — это залог. Его «персона» — это актив.</span></li>
+                    </ul>
+                    <div class="bg-white p-6 rounded-xl my-6 border border-slate-200 shadow-sm">
+                         <h4 class="text-xl font-bold mb-2 text-slate-800">Почему ФИО в документах пишется заглавными буквами?</h4>
+                         <p class="text-slate-700 leading-relaxed">Это не является нормой типографики. По правилам международного коммерческого права (UCC), заглавными буквами обозначается название корпорации или неодушевленного предмета (товара). Таким образом система юридически отделяет «персону» (объект права, раба) от живого Человека (субъекта права, суверена).</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-5 text-slate-800">Способы противодействия:</h3>
+                    <p class="text-slate-700 leading-relaxed mb-4">Основная задача — юридически разорвать ложную связь с «персоной» и заявить свои права на траст, созданный на имя Человека.</p>
+                    <ol class="list-decimal list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Осознание разделения.</strong> Важно понимать: живой Человек по имени Иван — это не юридическое лицо ИВАНОВ ИВАН ИВАНОВИЧ.</li>
+                        <li><strong>Декларация статуса.</strong> Через Волеизъявление и аффидевит необходимо объявить себя бенефициаром и учредителем «персоны», взяв таким образом управление в свои руки.</li>
+                        <li><strong>Действия в статусе суверена.</strong> Необходимо прекратить идентифицировать себя с паспортом и другими документами «персоны».</li>
+                    </ol>
+                    <div class="quote mt-8">
+                        <p class="font-semibold text-lg leading-relaxed">Понимание механизма работы свидетельства о рождении — фундаментальный шаг к восстановлению своего естественного правового статуса.</p>
+                    </div>
+                </section>
+
+                <section id="maritime-law" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Морское право против Земельного: В чьей юрисдикции проходит суд?</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Терминология, используемая в судах, указывает на их истинную природу. Слова «пристав», «доставить», «ордер», «банк» (судейский) — это термины морского права. Судья сидит на возвышении («мостик»), а участники процесса находятся в «доке». Это означает, что разбирательство ведется не по законам земли, а по законам моря.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Современная юриспруденция основана на **Адмиралтейском (Морском, Коммерческом) праве**. Это право торговли, в котором отсутствуют понятия «человек» или «справедливость», а есть лишь «товар», «груз» и «коммерческие контракты».</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Ключевые различия юрисдикций:</h3>
+                    <div class="grid md:grid-cols-2 gap-8 mt-6">
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="text-2xl font-bold mb-3 text-red-600">Морское право (Право Воды)</h4>
+                            <ul class="list-disc list-inside space-y-2 text-slate-600">
+                                <li>Действует в международной торговле.</li>
+                                <li>Оперирует юридическими фикциями: корпорациями, "персонами".</li>
+                                <li>Основано на статутах и кодексах.</li>
+                                <li>Принцип: презумпция виновности.</li>
+                                <li>Субъекты: ответчики, истцы (юридические лица).</li>
+                                <li>Цель: извлечение коммерческой выгоды.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="text-2xl font-bold mb-3 text-green-600">Земельное право (Естественное)</h4>
+                            <ul class="list-disc list-inside space-y-2 text-slate-600">
+                                <li>Действует на земле, между живыми людьми.</li>
+                                <li>Оперирует фактами и живыми существами.</li>
+                                <li>Основано на здравом смысле и естественных законах.</li>
+                                <li>Принцип: презумпция невиновности.</li>
+                                <li>Субъекты: живые Мужчины и Женщины.</li>
+                                <li>Цель: установление справедливости.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Механизм «спуска на воду»:</h3>
+                    <p class="text-slate-700 leading-relaxed">Перевод человека в морскую юрисдикцию происходит через **свидетельство о рождении** (англ. birth certificate). Слово "birth" созвучно с "berth" — причал. Регистрация рождения трактуется как регистрация «судна» («персоны») в порту. Предъявляя паспорт или откликаясь на имя, написанное заглавными буквами, человек признает себя капитаном этого судна и соглашается действовать по морским законам.</p>
+                    <div class="quote mt-6">
+                        <p class="font-semibold text-lg">Флаг с золотой бахромой, который часто можно увидеть в судах и кабинетах чиновников, является флагом Адмиралтейского (военного) права. Он указывает на то, что на данной территории не действует конституция. Здесь действует закон коммерции.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-5 text-slate-800">Возвращение «на землю»:</h3>
+                    <p class="text-slate-700 leading-relaxed mb-4">Задача состоит в том, чтобы юридически грамотно заявить о своей истинной юрисдикции.</p>
+                    <ul class="list-none space-y-3 mt-4">
+                        <li class="flex items-start p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong class="text-blue-700 mr-3">1. Отказ от признания юрисдикции:</strong> На вопрос "Вы ИВАНОВ ИВАН ИВАНОВИЧ?" следует ответ: "Я живой Человек по имени Иван. Я не являюсь юридической фикцией".</li>
+                        <li class="flex items-start p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong class="text-blue-700 mr-3">2. Декларация статуса:</strong> "Я нахожусь на земле и действую в рамках естественного права".</li>
+                        <li class="flex items-start p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong class="text-blue-700 mr-3">3. Требование доказательств:</strong> "Требую предоставить доказательства того, что законы вашей коммерческой корпорации имеют силу в отношении меня, живого Человека".</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Понимание разницы между юрисдикциями является ключевым для защиты своих прав.</p>
+                </section>
+
+                <section id="offer-acceptance" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Оферта и Акцепт: Как не заключать контракты с системой</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Любое взаимодействие с системой (штраф, налог, повестка, требование чиновника) является не приказом, а **офертой** — предложением заключить сделку. Система действует в рамках коммерческого права.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">По законам коммерции, контракт не может быть заключен без согласия (акцепта) обеих сторон. Молчание, подчинение или спор по существу деталей оферты трактуются системой как согласие, то есть **акцепт**.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Способы получения акцепта системой:</h3>
+                    <ul class="space-y-4 text-slate-700 leading-relaxed">
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong class="text-slate-900">Молчаливое согласие:</strong> Игнорирование полученного штрафа или требования. По истечении определенного срока система считает оферту принятой.</li>
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong class="text-slate-900">Спор по существу:</strong> При обвинении в нарушении, попытка оправдаться ("я не превышал скорость") является косвенным акцептом. Оправдываясь, человек признает юрисдикцию системы и ее право выставлять ему обвинения.</li>
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong class="text-slate-900">Подчинение:</strong> Предъявление паспорта по первому требованию или подписание протокола является явным акцептом и заключением контракта.</li>
+                    </ul>
+                     <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Искусство отклонения оферты:</h3>
+                     <p class="text-slate-700 leading-relaxed mb-4">Задача — не спорить и не оправдываться, а юридически грамотно отклонить оферту или принять ее на своих условиях.</p>
+                     <div class="space-y-6">
+                        <div class="p-5 bg-white border border-slate-200 rounded-xl shadow-sm"><h4 class="text-2xl font-bold text-slate-800 mb-2">1. Полное отклонение через контр-вопросы.</h4><p class="text-slate-700 leading-relaxed">Этот метод перекладывает бремя доказывания на систему.<br><strong class="block mt-3 mb-1">Пример:</strong><br>— Предъявите ваши документы.<br>— На каком основании вы это требуете? Является ли это требование законным?<br>— Вы нарушили пункт 5.3 ПДД.<br>— Я не являюсь стороной договора под названием "ПДД". Требую доказать, что этот договор имеет ко мне отношение.</p></div>
+                        <div class="p-5 bg-white border border-slate-200 rounded-xl shadow-sm"><h4 class="text-2xl font-bold text-slate-800 mb-2">2. Условный акцепт (Conditional Acceptance).</h4><p class="text-slate-700 leading-relaxed">Высшая форма юридической самозащиты. Формально это согласие, но обставленное такими условиями, которые система выполнить не в состоянии.<br><strong class="block mt-3 mb-1">Пример (в ответ на квитанцию ЖКХ):</strong><br>«Данная оферта на оплату [сумма] будет акцептована мной при условии предоставления вашей стороной:<br>1. Заверенной копии договора между мной, живым Человеком, и вашей организацией.<br>2. Доказательств легитимности вашей организации.<br>3. Полного и подробного расчета тарифов, заверенного подписью и печатью живого и ответственного должностного лица.<br>В случае непредоставления указанных документов в разумный срок, ваша оферта будет считаться безвозвратно отклоненной».</p></div>
+                        <div class="p-5 bg-white border border-slate-200 rounded-xl shadow-sm"><h4 class="text-2xl font-bold text-slate-800 mb-2">3. Отказ от контракта.</h4><p class="text-slate-700 leading-relaxed">Прямое и недвусмысленное заявление о своей правовой позиции.<br><strong class="block mt-3 mb-1">Пример (в суде):</strong><br>"Я, живой Человек, не желаю вступать с вами в контрактные отношения и не даю своего согласия на это разбирательство. Я не признаю вашу юрисдикцию надо мной".</p></div>
+                    </div>
+                    <div class="quote mt-8">
+                        <p class="font-semibold text-lg leading-relaxed">Овладение искусством оферты и акцепта позволяет перестать быть жертвой обстоятельств и стать хозяином своей юридической реальности.</p>
+                    </div>
+                </section>
+
+                <section id="promissory-note-law" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Вексельное право и ваш паспорт</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Паспорт, как и любой другой государственный документ, является формой простого векселя (promissory note). Подписывая заявление на его получение, человек фактически выписывает бессрочный вексель на свое имя, передавая права на свою "персону" государству.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Государство становится держателем векселя, а человек — должником, обязанным исполнять все правила и законы, установленные держателем.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Как это работает:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Подпись — это акцепт долга:</strong> Ставя подпись, человек соглашается с тем, что его "персона" является собственностью эмитента (государства).</li>
+                        <li><strong>"Гражданские обязанности" как проценты по векселю:</strong> Налоги, штрафы, воинская повинность — это формы уплаты по бессрочному долговому обязательству.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Расторжение этого вексельного договора возможно через процедуру отзыва акцепта и заявления себя живым Человеком — кредитором, а не должником.</p>
+                </section>
+
+                <section id="vaccine-refusal" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Оповещение-отказ от оферты прививок</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Любое предложение о медицинской процедуре, включая вакцинацию, является офертой. Принуждение к ней незаконно. Грамотно составленный юридический отказ — это не просьба, а констатация факта и отклонение оферты.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Документ должен быть составлен в форме "Уведомления-отказа" и содержать ссылки на международное право (Нюрнбергский кодекс) и естественное право на телесную неприкосновенность.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Ключевые пункты документа:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li>Заявление о статусе живого Человека и правах на свое тело.</li>
+                        <li>Уведомление о полном и безоговорочном отказе от оферты медицинского вмешательства.</li>
+                        <li>Предупреждение об ответственности за возможный ущерб здоровью с выставлением коммерческого требования (счета) на конкретную сумму.</li>
+                        <li>Требование предоставить доказательства безопасности и эффективности процедуры, подписанные ответственным живым лицом.</li>
+                    </ul>
+                </section>
+
+                <section id="cestui-que-vie-act" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Трастовое право и Cestui Que Vie Act 1666</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Основа современного рабства заложена в морском праве, в частности, в "Cestui Que Vie Act" 1666 года. Этот акт, принятый в Англии после эпидемии чумы, объявлял всех пропавших без вести (в море) "мертвыми в законе" через 7 лет.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Эта доктрина была тайно распространена на всех людей. Если человек в течение 7 лет после рождения не заявляет о себе как о "живом", система объявляет его "мертвым в законе" и учреждает на его имя траст, которым сама же и управляет.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Последствия акта:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Потеря прав:</strong> "Мертвый в законе" не имеет естественных прав, только обязанности. Он не может владеть собственностью, а лишь пользуется ей.</li>
+                        <li><strong>Создание "персоны":</strong> Свидетельство о рождении — это регистрация этого траста.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Процедура "становления Человеком" — это акт заявления себя "живым" и возвращения прав на управление своим трастом.</p>
+                </section>
+
+                <section id="citizen-status" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Понятие "Гражданин" как статус раба</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">В Римском праве, на котором основана современная юриспруденция, существовало четкое разделение. "Homo" — человек, субъект права. "Caput" — голова, раб, объект права. Статус "гражданина" (citizen) происходит от латинского "civis", но в современной интерпретации он низводит человека до статуса "caput".</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Принимая статус "гражданина", человек добровольно отказывается от своих естественных прав в обмен на "привилегии" и "обязанности", предоставляемые корпорацией-государством.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Человек vs Гражданин:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Человек:</strong> Имеет неотъемлемые права, данные от рождения. Является кредитором.</li>
+                        <li><strong>Гражданин:</strong> Имеет обязанности и ограниченные права, дарованные государством. Является должником.</li>
+                    </ul>
+                </section>
+
+                <section id="extraterritorial-document" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Создание собственного экстерриториального документа</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">После уведомления системы о своем статусе живого Человека возникает вопрос самоидентификации. Одним из решений является создание собственного удостоверения — "Карты суверена" или "Волеизъявления живого Человека" в формате карты.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Этот документ не является "заменой паспорта". Это декларация о выходе из юрисдикции системы и свидетельство статуса, основанное на естественном праве.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Ключевые элементы документа:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li>Фотография.</li>
+                        <li>Имя, данное родителями (не ФИО).</li>
+                        <li>Дата и место рождения.</li>
+                        <li>Отпечаток пальца ("абсолютная печать").</li>
+                        <li>Прямое указание на статус: "Живой Человек", "Суверен".</li>
+                        <li>Текст о том, что владелец документа находится под защитой естественного и международного права.</li>
+                    </ul>
+                </section>
+                
+                <!-- NEW SECTIONS -->
+                <section id="torsion-fields" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Торсионные поля и психотроника</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Торсионные поля (поля кручения) — это пятое фундаментальное взаимодействие, исключенное из официальной физики. В отличие от электромагнитных полей, они не переносят энергию, а переносят информацию мгновенно в любую точку пространства-времени.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Эти поля являются физической основой сознания, мысли и памяти. Тот, кто управляет торсионными полями, может управлять реальностью.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Применение технологий:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Психотроника:</strong> Создание генераторов, способных транслировать мысли, эмоции и команды непосредственно в подсознание человека, минуя его органы чувств.</li>
+                        <li><strong>Передача информации:</strong> Создание систем связи, не подверженных экранированию и работающих быстрее скорости света.</li>
+                        <li><strong>Влияние на материю:</strong> Изменение физических свойств веществ, создание новых материалов и даже аннигиляция материи.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Эти технологии активно используются спецслужбами для контроля над населением и скрыты под грифом "секретно".</p>
+                </section>
+
+                <section id="antigravity" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Антигравитация и двигатель Серла</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">"Гравитация" в ее ньютоновском и эйнштейновском понимании — это ложная концепция. Существует единое электромагнитное поле, а гравитация — лишь один из его эффектов. Следовательно, ей можно управлять.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Технологии антигравитации существуют с середины XX века. Двигатель Серла (Searl Effect Generator, SEG) — один из самых известных примеров рабочего устройства.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Принцип работы SEG:</h3>
+                    <p class="text-slate-700 leading-relaxed">Устройство представляет собой систему вращающихся магнитных колец и роликов. При достижении определенной скорости вращения, система входит в резонанс, начинает самоподдерживаться и генерировать огромное количество свободной энергии, создавая вокруг себя мощное антигравитационное поле.</p>
+                    <p class="mt-8 font-medium text-slate-800">Все "НЛО", которые наблюдаются по всему миру, являются аппаратами, построенными на этих принципах. Технологии скрываются, чтобы сохранить власть нефтегазовых и энергетических корпораций.</p>
+                </section>
+                
+                <section id="replicators" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Репликаторы и технология Асгарда</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Репликатор — это устройство, способное материализовать любой предмет из "эфира" (квантового поля), изменяя его вибрационную структуру по заданному шаблону. Это не научная фантастика, а вершина физики.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Энергия (E) и материя (m) — это одно и то же (E=mc²). Репликатор просто преобразует свободную энергию в материю.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Происхождение технологии:</h3>
+                    <p class="text-slate-700 leading-relaxed">Считается, что эта технология была получена в рамках секретных космических программ от внеземных цивилизаций (условно "Асгард"). Она позволяет создавать пищу, материалы, запчасти — все что угодно — буквально из ничего.</p>
+                    <p class="mt-8 font-medium text-slate-800">Внедрение этой технологии мгновенно уничтожит всю мировую экономику, основанную на дефиците, производстве и потреблении. Поэтому она остается самой охраняемой тайной.</p>
+                </section>
+
+                <section id="archons" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Архитекторы Матрицы: Архонты</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Гностические тексты (например, из библиотеки Наг-Хаммади) описывают нашу реальность как искусственную тюрьму, созданную не Богом-Творцом, а низшими сущностями — Архонтами. Главный среди них — Демиург, или "лже-бог".</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Архонты — это нефизические, паразитические сущности, которые питаются человеческими страданиями, страхом, гневом и другими низкочастотными эмоциями. Они являются архитекторами и надзирателями Матрицы.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Методы контроля:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Создание дуальности:</strong> Разделение на "добро" и "зло", "свет" и "тьму", религии, нации, политические идеологии. Любой конфликт генерирует необходимую им энергию (гаввах).</li>
+                        <li><strong>Внедрение вирусных мыслеформ:</strong> Чувство вины, стыда, греха, собственной ничтожности — это программы, внедренные в человеческое сознание.</li>
+                        <li><strong>Цикл реинкарнации:</strong> После смерти души стирают память и снова отправляют в Матрицу, в новое тело, чтобы продолжать собирать урожай энергии.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Выход из-под власти Архонтов возможен через осознание природы этой тюрьмы и прекращение генерации негативных эмоций, которыми они питаются.</p>
+                </section>
+
+                <section id="moon-control-station" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Луна - станция контроля</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Луна не является естественным спутником Земли. Это гигантский искусственный объект, своего рода "Звезда Смерти", размещенный на орбите в глубокой древности для контроля над биосферой и сознанием человечества.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Множество аномалий указывают на ее искусственную природу: она полая, имеет металлическую оболочку, ее размер и расстояние от Земли подобраны так, чтобы идеально закрывать Солнце во время затмения.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Функции Луны:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Транслятор Матрицы:</strong> Луна генерирует и транслирует на Землю низкочастотное поле, которое поддерживает голограмму нашей реальности и подавляет высшие центры сознания человека.</li>
+                        <li><strong>Управление биоритмами:</strong> Лунные циклы напрямую влияют на женский менструальный цикл, приливы и отливы, и другие процессы, жестко привязывая биологическую жизнь к своей программе.</li>
+                        <li><strong>"Ловушка для душ":</strong> После смерти физического тела душа притягивается к "свету в конце тоннеля", который является ловушкой, проецируемой с Луны, для последующей отправки на реинкарнацию.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">"Высадка на Луну" была постановкой, снятой для того, чтобы укрепить миф о ее "естественности" и отвлечь внимание от ее истинного предназначения.</p>
+                </section>
+
+                <section id="egregores" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Эгрегоры: Энерго-информационные паразиты</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Эгрегор — это энерго-информационная структура в тонком мире, созданная мыслями и эмоциями группы людей, объединенных одной идеей. Любая религия, нация, политическая партия, корпорация или даже спортивная команда имеет свой эгрегор.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Изначально нейтральные, со временем эгрегоры обретают подобие собственного сознания и начинают действовать как паразиты, стремясь к собственному выживанию и росту за счет энергии своих последователей.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Как работает эгрегор:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Подключение:</strong> Человек подключается к эгрегору через ритуалы, посвящения, принятие символики или просто через сильную эмоциональную вовлеченность в идею.</li>
+                        <li><strong>Откачка энергии:</strong> Эгрегор питается энергией внимания и эмоций своих адептов. Чем сильнее эмоция (любовь к родине, ненависть к врагу, религиозный экстаз), тем больше питания он получает.</li>
+                        <li><strong>Управление:</strong> Взамен на энергию, эгрегор дает человеку чувство принадлежности, защиты и может подкидывать ему нужные мысли, идеи и модели поведения, которые способствуют дальнейшему росту эгрегора.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Выход из-под влияния эгрегоров — это ключ к обретению свободы мысли и воли. Это достигается через осознанное наблюдение за своими мыслями и эмоциями и отказ от слепого служения любой коллективной идее.</p>
+                </section>
+
+                <section id="somatics" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Соматика и выход из телесных блоков</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Тело помнит все. Каждая подавленная эмоция, психологическая травма или стресс не исчезают, а "записываются" в теле в виде хронического мышечного напряжения — "телесного блока" или "мышечного панциря".</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Боль в спине, зажатая шея, скованные плечи — это не просто физические симптомы. Это замороженные в теле страх, гнев, обида.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Что такое соматика:</h3>
+                    <p class="text-slate-700 leading-relaxed">Соматика (например, по методу Томаса Ханны) — это система нервно-мышечного переобучения, которая позволяет через медленные, осознанные движения "стереть" эти патологические паттерны напряжения непосредственно из мозга. В отличие от массажа или мануальной терапии, соматика работает не с мышцами, а с управляющим центром — корой головного мозга.</p>
+                    <p class="mt-8 font-medium text-slate-800">Освобождение тела от блоков ведет к освобождению сознания от подавленных эмоций и возвращению жизненной энергии.</p>
+                </section>
+
+                <section id="raw-food-diet" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Сыроедение как видовое питание</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Человек по своей биологической природе является плодоядным (фрукторианцем). Его пищеварительная система, зубы, длина кишечника идеально приспособлены для переваривания сырых фруктов, овощей, орехов и семян. Термически обработанная пища (вареная, жареная) является ядом для организма.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">При нагревании выше 42°C в пище уничтожаются энзимы (ферменты), необходимые для ее собственного переваривания, а белки денатурируют, превращаясь в токсины. Это заставляет организм тратить колоссальные ресурсы на переваривание и приводит к "пищевому лейкоцитозу" — реакции иммунной системы, как на вторжение чужеродных агентов.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Эффекты перехода на сыроедение:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Очищение организма:</strong> Тело избавляется от накопленных токсинов, уходят хронические болезни, лишний вес.</li>
+                        <li><strong>Энергетический подъем:</strong> Энергия, ранее уходившая на переваривание мертвой пищи, высвобождается для жизни и творчества.</li>
+                        <li><strong>Прояснение сознания:</strong> Уходят "туман в голове", апатия, депрессия. Мышление становится ясным и быстрым.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Перевод человечества на вареную пищу был одним из актов порабощения, направленным на понижение вибраций и подавление сознания.</p>
+                </section>
+                
+                <section id="solfeggio-frequencies" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Влияние частот Сольфеджио на ДНК</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Древние григорианские песнопения и другие сакральные музыкальные произведения были основаны на особом строе — "Частотах Вознесения" или частотах Сольфеджио. Это шесть тонов, которые оказывают мощное гармонизирующее и исцеляющее воздействие на тело и сознание.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Современный музыкальный строй (440 Гц) был искусственно введен в XX веке. Эта частота является диссонансной, вызывает стресс, агрессию и подавляет сознание. Стандартный строй до этого был 432 Гц, который является гармоничным для человеческого организма и Вселенной.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Основные частоты Сольфеджио и их эффекты:</h3>
+                    <ul class="space-y-4">
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong>396 Гц</strong> – Освобождение от вины и страха.</li>
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong>417 Гц</strong> – Отмена ситуаций и содействие изменениям.</li>
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong>528 Гц</strong> – Трансформация и чудеса (Восстановление ДНК). Считается "частотой любви".</li>
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong>639 Гц</strong> – Единение, гармонизация отношений.</li>
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong>741 Гц</strong> – Пробуждение интуиции, очищение от токсинов.</li>
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong>852 Гц</strong> – Возвращение к духовному порядку.</li>
+                    </ul>
+                    <p class="mt-8 font-medium text-slate-800">Прослушивание музыки, настроенной на эти частоты, является мощным инструментом для самоисцеления и духовного пробуждения.</p>
+                </section>
+
+                <!-- OTHER SECTIONS (EXISTING + NEW) -->
                 <section id="gnm" class="content-section">
                      <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Германская Новая Медицина (ГНМ) и Теория Микробов</h2>
                      <p class="text-lg text-slate-700 leading-relaxed">Вся современная медицина построена на «Теории микробов» Луи Пастера: вирус/бактерия попадает в тело и вызывает болезнь. Есть альтернативная «Теория среды» Антуана Бешама: микроб — это ничто, среда — это всё. Болезнь возникает, когда «среда» (наше тело) ослаблена стрессом, токсинами, плохим питанием. А вирусы и бактерии — это не враги, а «санитары», которые приходят утилизировать мертвые клетки.</p>
@@ -415,10 +911,114 @@
                          <p class="text-slate-700 leading-relaxed">Герман Греф бывший председатель совета директоров Сбербанка.</p>
                     </div>
                 </section>
+
+                <section id="mandela-effect" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Эффект Манделы: Сбой в Матрице</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Эффект Манделы — это феномен коллективных ложных воспоминаний, когда множество людей помнят события или детали, которые противоречат официальной реальности. Официальная наука списывает это на "конфабуляцию" (ошибки памяти), но истинная природа явления гораздо глубже.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Это не сбои в памяти отдельных людей. Это свидетельства того, что сама ткань реальности нестабильна. Прошлое изменяется.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Возможные объяснения:</h3>
+                    <ul class="space-y-4 text-slate-700 leading-relaxed">
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong class="text-slate-900">1. Сдвиги между временными линиями.</strong> Существует множество параллельных реальностей. Группы людей или даже все человечество периодически "перескакивают" из одной временной линии в другую, где история пошла немного иначе. При этом у некоторых сохраняется "остаточная память" из предыдущей реальности.</li>
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong class="text-slate-900">2. Ретроактивное редактирование реальности.</strong> Те, кто контролирует симуляцию, вносят изменения в "исходный код" нашей реальности. Большинство людей автоматически принимают новую версию, но у некоторых остаются "кэшированные" воспоминания о старой.</li>
+                        <li class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm"><strong class="text-slate-900">3. Деятельность ЦЕРН.</strong> Большой адронный коллайдер (БАК) — это не просто научный инструмент. Эксперименты ЦЕРН с высокими энергиями и темной материей могут разрывать ткань пространства-времени, смешивая параллельные вселенные и вызывая эти "сбои".</li>
+                    </ul>
+                    <h3 class="text-3xl font-bold mt-10 mb-5 text-slate-800">Классические примеры:</h3>
+                    <ul class="list-disc list-inside space-y-3 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Смерть Нельсона Манделы:</strong> Тысячи людей отчетливо помнят, что он умер в тюрьме в 1980-х годах, и даже помнят выпуски новостей об этом. В нашей текущей реальности он вышел на свободу и умер в 2013 году.</li>
+                        <li><strong>"Люк, я твой отец":</strong> Знаменитая фраза из "Звездных войн". На самом деле Дарт Вейдер говорит: "Нет, я твой отец".</li>
+                        <li><strong>Человечек из "Монополии":</strong> У него нет монокля, хотя многие его отчетливо помнят.</li>
+                    </ul>
+                    <div class="quote mt-8">
+                        <p class="font-semibold text-lg leading-relaxed">Эффект Манделы — это прямое доказательство того, что мир не так стабилен и материален, как нам кажется. Это трещина в стене тюрьмы, через которую можно увидеть, что находится за ней.</p>
+                    </div>
+                </section>
+                
+                <section id="chemtrails" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Химтрейлы: Химическая война в небе</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Белые полосы, которые оставляют в небе самолеты, не являются обычными инверсионными следами. Инверсионный след состоит из кристаллов льда и быстро исчезает. Химтрейлы (chemtrails) висят в небе часами, постепенно расползаясь и превращаясь в мутную пелену.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Это не побочный продукт работы двигателей. Это целенаправленное распыление аэрозолей в атмосфере в рамках глобальной, секретной программы геоинженерии.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Состав и цели распыления:</h3>
+                    <ul class="space-y-6">
+                        <li><strong class="text-blue-700 text-lg">Состав:</strong> Анализы проб воздуха, почвы и воды после активного распыления показывают аномально высокое содержание солей бария, оксида алюминия, стронция, а также полимерных волокон и биологических компонентов.</li>
+                        <li><strong class="text-blue-700 text-lg">Цель №1: Управление погодой и климатом.</strong> Распыление металлов создает в атмосфере электропроводящую плазму. Эту плазму можно "накачивать" с помощью наземных излучателей (типа HAARP), вызывая засухи, наводнения и другие погодные аномалии в заданных регионах.</li>
+                        <li><strong class="text-blue-700 text-lg">Цель №2: Влияние на здоровье.</strong> Постоянное вдыхание микрочастиц алюминия и бария приводит к респираторным заболеваниям, ослаблению иммунитета и неврологическим проблемам. Это часть программы по сокращению и ослаблению населения.</li>
+                        <li><strong class="text-blue-700 text-lg">Цель №3: Создание глобальной сети слежения.</strong> Распыленные наночастицы могут служить частью глобальной системы наблюдения и контроля, взаимодействуя с сигналами 5G и другими видами излучений.</li>
+                    </ul>
+                    <div class="bg-white p-6 rounded-xl my-6 border border-slate-200 shadow-sm">
+                         <h4 class="text-xl font-bold mb-2 text-slate-800">Кто за этим стоит?</h4>
+                         <p class="text-slate-700 leading-relaxed">Это глобальная программа, осуществляемая наднациональными структурами. Она проводится под прикрытием борьбы с "глобальным потеплением" (якобы, аэрозоли отражают солнечный свет), но реальные цели совершенно иные.</p>
+                    </div>
+                    <p class="mt-8 font-medium text-slate-800">Просто подними глаза на небо. Перестань верить "официальным объяснениям" и начни доверять тому, что видишь.</p>
+                </section>
+
+                <section id="blue-beam" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Проект "Blue Beam" (Голубой луч)</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Это секретный проект НАСА и ООН, направленный на создание глобальной управляемой мистификации для установления Нового Мирового Порядка. Это психологическая операция планетарного масштаба, финальный акт перед полным порабощением человечества.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Цель проекта — сломить волю народов через симуляцию "второго пришествия", "нападения инопланетян" или другого глобального катаклизма, чтобы выжившие добровольно приняли единое мировое правительство, единую религию и единую цифровую валюту.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Четыре этапа реализации проекта:</h3>
+                    <ol class="list-decimal list-inside space-y-4 text-slate-700 leading-relaxed">
+                        <li><strong>Первый этап: Дискредитация всех существующих знаний.</strong> Создание искусственных землетрясений и обнаружение "новых" археологических находок, которые якобы опровергают все существующие религиозные и научные доктрины. Цель — посеять хаос и сомнение.</li>
+                        <li><strong>Второй этап: Глобальное небесное шоу.</strong> С помощью спутников и мощных лазерных проекторов в небе над разными частями света будут созданы гигантские трехмерные голограммы (изображения Христа, Магомета, Будды, Кришны, "инопланетных кораблей"). Каждая группа людей увидит то, что соответствует ее верованиям.</li>
+                        <li><strong>Третий этап: Телепатическая связь.</strong> С помощью низкочастотных излучений (ELF, VLF) будет осуществляться прямое воздействие на мозг людей. "Голос бога" или "командиров флота" будет звучать прямо в голове у каждого, отдавая приказы и призывая к объединению под властью нового "спасителя".</li>
+                        <li><strong>Четвертый этап: Симуляция сверхъестественных событий.</strong> Массовые "полтергейсты", симуляция "вторжения пришельцев" в городах, превращение электроники в оружие. Цель — довести людей до состояния паники и истерии, когда они будут готовы принять любой порядок, лишь бы прекратился хаос.</li>
+                    </ol>
+                    <div class="quote mt-8">
+                        <p class="font-semibold text-lg leading-relaxed">Технологии для этого уже существуют. Голограммы, направленное звуковое вещание, психотронное оружие — все это не фантастика. "Blue Beam" — это кульминация многовекового плана по установлению тотального контроля.</p>
+                    </div>
+                </section>
+                
+                <section id="structured-water" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Память воды: Живая информационная матрица</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Современная наука рассматривает воду как простое химическое соединение H₂O. Это примитивный и опасный взгляд. Вода — это не просто вещество. Это живая субстанция, способная записывать, хранить и передавать информацию.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Структура воды, расположение ее молекул в кластерах, меняется под воздействием любого внешнего поля: электромагнитного, звукового и даже информационного (мысли, слова, эмоции).</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Эксперименты Масару Эмото:</h3>
+                    <p class="text-slate-700 leading-relaxed mb-6">Японский исследователь Масару Эмото наглядно продемонстрировал этот феномен. Он воздействовал на образцы дистиллированной воды различными способами, после чего резко замораживал их и фотографировал кристаллы льда под микроскопом.</p>
+                    <ul class="space-y-3">
+                        <li><strong class="text-green-600">Позитивное воздействие:</strong> Вода, которой "говорили" слова "любовь", "благодарность" или которой "давали слушать" классическую музыку, формировала идеально симметричные, красивые шестигранные кристаллы, похожие на снежинки.</li>
+                        <li><strong class="text-red-600">Негативное воздействие:</strong> Вода, подвергнутая ругани ("ты дурак"), воздействию тяжелой музыки или находившаяся рядом с работающим мобильным телефоном, формировала уродливые, хаотичные, разрушенные кристаллы или не формировала их вовсе.</li>
+                    </ul>
+                    <div class="bg-white p-6 rounded-xl my-6 border border-slate-200 shadow-sm">
+                         <h4 class="text-xl font-bold mb-2 text-slate-800">Что это означает для нас?</h4>
+                         <p class="text-slate-700 leading-relaxed">Человеческое тело на 70-80% состоит из воды. Это означает, что каждая наша мысль, каждое слово, каждая эмоция, а также музыка, которую мы слушаем, и электромагнитный смог, который нас окружает, напрямую меняют структуру воды в нашем организме.</p>
+                         <p class="mt-4 text-slate-700 leading-relaxed">Негативные мысли и слова буквально разрушают нас изнутри на клеточном уровне. Позитивные — гармонизируют и исцеляют.</p>
+                    </div>
+                    <div class="quote mt-8">
+                        <p class="font-semibold text-lg leading-relaxed">Вода из-под крана, прошедшая через множество труб, насосов и фильтров, — это "мертвая", хаотически структурированная вода. Родниковая, талая или структурированная специальными приборами вода несет в себе жизненную энергию. Понимание этого — ключ к здоровью и долголетию.</p>
+                    </div>
+                </section>
+                
+                <section id="akashic-records" class="content-section">
+                    <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Хроники Акаши: Вселенская база данных</h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">Хроники Акаши — это не эзотерическая выдумка, а реальное информационное поле, или "эфирная библиотека", в которой хранится полная запись о каждом событии, мысли, чувстве и намерении, когда-либо происходившем во Вселенной. Это своего рода "космический жесткий диск" или "облачное хранилище" душ.</p>
+                    <div class="quote">
+                        <p class="leading-relaxed">Термин "Акаша" взят из санскрита и означает "эфир" или "первосубстанция", из которой все произошло. Хроники — это "память" этой первосубстанции.</p>
+                    </div>
+                    <h3 class="text-3xl font-bold mt-10 mb-4 text-slate-800">Что содержится в Хрониках:</h3>
+                    <ul class="list-disc list-inside space-y-3 my-5 pl-2 text-slate-700 leading-relaxed">
+                        <li><strong>Записи о прошлом:</strong> не искаженная, а истинная история планеты, цивилизаций и каждого отдельного человека, включая все его прошлые воплощения.</li>
+                        <li><strong>Информация о настоящем:</strong> полное знание обо всех текущих событиях и их истинных причинах, скрытых от обычного восприятия.</li>
+                        <li><strong>Вероятностные ветки будущего:</strong> Хроники содержат не одно предопределенное будущее, а все возможные варианты развития событий, основанные на свободе выбора каждого существа.</li>
+                    </ul>
+                     <div class="bg-white p-6 rounded-xl my-6 border border-slate-200 shadow-sm">
+                         <h4 class="text-xl font-bold mb-2 text-slate-800">Как получить доступ?</h4>
+                         <p class="text-slate-700 leading-relaxed">Доступ к Хроникам Акаши — это не привилегия избранных. Это естественная способность души, которая была подавлена и забыта. Такие люди, как Эдгар Кейси, Никола Тесла, Елена Блаватская, черпали свои знания и озарения именно оттуда.</p>
+                         <p class="mt-4 text-slate-700 leading-relaxed">Доступ открывается через изменение состояния сознания: глубокую медитацию, осознанные сновидения, гипнотический транс или спонтанные озарения. Ключом является повышение собственных вибраций и чистота намерений.</p>
+                    </div>
+                    <div class="quote mt-8">
+                        <p class="font-semibold text-lg leading-relaxed">Хроники Акаши — это доказательство того, что ничто не исчезает бесследно. Каждое действие и мысль оставляют вечный отпечаток во Вселенной. Это высший суд, где каждый сам является и обвиняемым, и судьей, и свидетелем.</p>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const sidebar = document.getElementById('sidebar');
@@ -436,24 +1036,25 @@
 
                 let activeLinkParent = null;
                 navLinks.forEach(link => {
-                    if (link.getAttribute('href') === hash) {
-                        link.classList.add('active');
+                    const isActive = link.getAttribute('href') === hash;
+                    link.classList.toggle('active', isActive);
+                    if (isActive) {
                         activeLinkParent = link.closest('ul').previousElementSibling;
-                    } else {
-                        link.classList.remove('active');
                     }
                 });
                 
                 navToggles.forEach(toggle => {
                     const isParentOfActive = toggle === activeLinkParent;
-                    toggle.classList.toggle('active', isParentOfActive);
-                    toggle.nextElementSibling.classList.toggle('hidden', !isParentOfActive);
+                    if(isParentOfActive) {
+                        toggle.classList.add('active');
+                        toggle.nextElementSibling.classList.remove('hidden');
+                    }
                 });
             }
 
             navToggles.forEach(toggle => {
                 toggle.addEventListener('click', () => {
-                    const isActive = toggle.classList.contains('active');
+                    constisActive = toggle.classList.contains('active');
                     navToggles.forEach(t => {
                         if (t !== toggle) {
                             t.classList.remove('active');
@@ -469,7 +1070,6 @@
                 link.addEventListener('click', (event) => {
                     event.preventDefault();
                     window.location.hash = link.getAttribute('href');
-                    // Close sidebar on mobile after click
                     if (window.innerWidth < 768) {
                         sidebar.classList.add('-translate-x-full');
                     }
@@ -482,13 +1082,11 @@
                 });
             });
             
-            // Mobile menu toggle
             menuBtn.addEventListener('click', () => {
                 sidebar.classList.toggle('-translate-x-full');
             });
 
             window.addEventListener('hashchange', updateContent);
-            // Initial load
             updateContent();
         });
     </script>
